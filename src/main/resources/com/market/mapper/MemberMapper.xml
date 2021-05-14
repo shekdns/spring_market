@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.market.mapper.MemberMapper">
+
+
+	<resultMap type="com.market.domain.MemberVO" id="memberMap">
+		<id property="userid" column="userid"/>
+		<result property="userid" column="userid"/>
+		<result property="userpw" column="userpw"/>
+		<result property="username" column="username"/>
+		<result property="email" column="email"/>
+		<result property="phone1" column="phone1"/>
+		<result property="phone2" column="phone2"/>
+		<result property="phone3" column="phone3"/>
+		<result property="zipcode" column="zipcode"/>
+		<result property="point" column="point"/>
+		<result property="regdate" column="regdate"/>
+		<collection property="authList" resultMap="authMap">
+		</collection>
+	</resultMap>
+	
+	<resultMap type="com.market.domain.AuthVO" id="authMap">
+		<result property="userid" column="userid"/>
+		<result property="auth" column="auth"/>
+	</resultMap>
+
+	<select id="read" resultMap="memberMap">
+	SELECT	userid,
+			userpw,
+			username,
+			email,
+			phone1,
+			phone2,
+			phone3,
+			zipcode,
+			point,
+			regdate,
+			auth
+	FROM	member
+	WHERE	userid = #{userid} 
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO member (userid, userpw, username, email, phone1, phone2, phone3, zipcode)
+		VALUES
+		( #{userid}, #{userpw}, #{username}, #{email}, #{phone1}, #{phone2}, #{phone3}, #{zipcode})
+	</insert>
+	
+</mapper>
