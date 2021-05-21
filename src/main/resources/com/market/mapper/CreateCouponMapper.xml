@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.market.mapper.CreateCouponMapper">
+
+
+	<sql id="criteria">
+		<trim prefix="(" suffix=") AND " prefixOverrides="OR">
+			<foreach item='type' collection="typeArr">
+				<trim prefix="OR">
+					<choose>
+						<when test="type == 'T'.toString()">
+							c_cp_name like '%'||#{keyword}||'%'
+						</when>
+						<when test="type == 'C'.toString()">
+							c_cp_type like '%'||#{keyword}||'%'
+						</when>
+						<when test="type == 'W'.toString()">
+							c_cp_price like '%'||#{keyword}||'%'
+						</when>
+					</choose>
+				</trim>
+			</foreach>
+		</trim>
+	</sql>
+
+	<insert id="create_coupon">
+		<selectKey keyProperty="c_cp_idx" order="BEFORE" resultType="int">
+			select seq_c_cp_idx.nextval from dual
+		</selectKey>
+
+		insert into create_coupon (c_cp_idx, c_cp_name, c_cp_content, c_cp_type, c_cp_price)
+		values (#{c_cp_idx}, #{c_cp_name}, #{c_cp_content}, #{c_cp_type}, #{c_cp_price})
+	</insert>
+	
+	
+	<select id="read" resultType="com.market.domain.CreateCouponVO">
+		select * from create_coupon where c_cp_idx = #{c_cp_idx}
+	</select>
+	
+	<delete id="delete_coupon">
+		delete create_coupon where c_cp_idx = #{c_cp_idx}
+	</delete>
+ 
+	<update id="update_coupon">
+		update create_coupon
+		set 
+		c_cp_name = #{c_cp_name},
+		c_cp_content = #{c_cp_content},
+		c_cp_type = #{c_cp_type},
+		c_cp_price = #{c_cp_price}
+		where c_cp_idx = #{c_cp_idx}
+	</update>
+	
+	 <select id="getListWithPaging" resultType="com.market.domain.CreateCouponVO">
+		<![CDATA[
+		SELECT	c_cp_idx,
+				c_cp_name,
+				c_cp_type,
+				c_cp_price,
+				regdate
+		FROM	(SELECT /*+INDEX_DESC(create_coupon pk_c_cp_idx) */
+        				rownum rn,
+        				c_cp_idx,
+        				c_cp_name,
+        				c_cp_type,
+        				c_cp_price,
+        				regdate
+      			FROM	create_coupon
+				WHERE 
+  		]]>
+		<include refid="criteria"></include> 
+      
+		<![CDATA[    
+      			rownum <= #{pageNum} * #{amount}
+      			)
+  		WHERE rn > (#{pageNum} -1) * #{amount}   
+		]]>
+	</select> 
+	
+	<select id="getTotalCount" resultType="int">
+		select count(*) from create_coupon where 
+		
+		<include refid="criteria"></include>
+		
+		<![CDATA[
+		c_cp_idx > 0
+		]]>
+	</select>
+	
+</mapper>

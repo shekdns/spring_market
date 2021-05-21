@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.market.mapper.CreateCouponAttachMapper">
+
+	<insert id="c_a_insert">
+		insert into coupon_attach (c_uuid, c_uploadPath, c_fileName, c_filetype, c_cp_idx)
+		 values (#{c_uuid}, #{c_uploadPath}, #{c_fileName}, #{c_filetype}, #{c_cp_idx})
+	
+	</insert>
+
+	<delete id="c_a_delete">
+		delete from coupon_attach where c_uuid = #{c_uuid}
+	
+	</delete>
+	
+	<select id="findByC_Idx" resultType="com.market.domain.CouponAttachVO">
+		select * from coupon_attach where c_cp_idx = #{c_cp_idx}
+	
+	</select>
+	
+	<delete id="deleteAll">
+		delete from coupon_attach where c_cp_idx = #{c_cp_idx}
+	</delete>
+
+</mapper>

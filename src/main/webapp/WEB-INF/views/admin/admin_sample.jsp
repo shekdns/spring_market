@@ -22,18 +22,34 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">메인</h1>
+            <h1 class="m-0">쿠폰 관리</h1>
           </div><!-- /.col -->
-          <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Starter Page</li>
-            </ol>
-          </div><!-- /.col -->
+        
         </div><!-- /.row -->
       </div><!-- /.container-fluid -->
     </div>
     <!-- /.content-header -->
+	<div class="row">
+		<div class="col-lg-12">
+				<div class="card">
+		              <div class="card-header">
+		                <h2 class="coupon-title">
+		                	쿠폰 목록
+		               	</h2>
+		                <div class="pull-right">
+		                	<button type="button" class="btn btn-block btn-success">쿠폰 생성</button>
+		                </div>
+		              </div>
+		              <!-- /.card-header -->
+		              <div class="card-body">
+		              
+		              
+		               </div>
+				
+				</div>
+			</div>
+
+	</div>
 
 
   </div>

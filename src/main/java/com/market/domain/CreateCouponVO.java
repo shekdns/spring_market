@@ -15,6 +15,6 @@ public class CreateCouponVO {
 	private int c_cp_price;
 	private Date regdate;
 	
-	private List<CouponAttachVO> c_attachList;
+    private List<CouponAttachVO> c_attachList;
 	
 }

@@ -1,5 +1,6 @@
 package com.market.controller;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -37,6 +38,10 @@ import net.coobird.thumbnailator.Thumbnailator;
 @Controller
 @Log4j
 public class UploadController {
+	
+	//D:\\spring\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\market\\resources\\upload
+	@Value("${globalConfig.uploadPath}")
+	private String uploadPath;
 	
 	private static String getFolder() {
 		
@@ -77,7 +82,8 @@ public class UploadController {
 		
 		log.info("update ajax post");
 		
-		String uploadFolder = "C:\\upload";
+		//String uploadFolder = "C:\\upload";
+		String uploadFolder = uploadPath;
 		
 		String uploadFolderPath = getFolder();
 		
@@ -140,7 +146,8 @@ public class UploadController {
 		
 		log.info("fileName: " + fileName);
 		
-		File file = new File("C:\\upload\\" + fileName);
+		//File file = new File("C:\\upload\\" + fileName);
+		File file = new File(uploadPath + "\\" + fileName);
 		
 		log.info("file: " + file);
 		
@@ -162,8 +169,9 @@ public class UploadController {
 	@ResponseBody
 	public ResponseEntity<Resource> downloadFile(@RequestHeader("User-Agent") String userAgent, String fileName){
 		
-		Resource resource = new FileSystemResource("C:\\upload\\" + fileName);
-		
+		//Resource resource = new FileSystemResource("C:\\upload\\" + fileName);
+		Resource resource = new FileSystemResource(uploadPath + "\\" + fileName);
+	
 		if(resource.exists() == false) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
@@ -208,7 +216,9 @@ public class UploadController {
 		File file = null;
 		
 		try {
-			file = new File("c:\\upload\\" + URLDecoder.decode(fileName, "UTF-8"));
+			//file = new File("c:\\upload\\" + URLDecoder.decode(fileName, "UTF-8"));
+			file = new File(uploadPath +"\\" + URLDecoder.decode(fileName, "UTF-8"));
+
 			file.delete();
 			
 			if(type.equals("image")) {
