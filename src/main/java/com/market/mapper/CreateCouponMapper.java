@@ -16,7 +16,9 @@ public interface CreateCouponMapper {
 	
 	public int update_coupon(CreateCouponVO coupon);
 	
-	public List<CreateCouponVO> getListWithPaging(Criteria cri);
+	public List<CreateCouponVO> getListWithPaging(Criteria cri); 
+	
+	//public CreateCouponVO getListWithPaging(Criteria cri);
 	
 	public int getTotalCount(Criteria cri);
 	

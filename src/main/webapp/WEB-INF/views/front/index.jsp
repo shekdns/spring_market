@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+ <%@include file="../include/front_setting.jsp"%>
  <%@include file="../include/front_header.jsp"%>
  
  			
@@ -76,15 +77,6 @@
 
                     <div class="row g-4 py-5 row-cols-1 row-cols-lg-4">
                        
-                                <!-- <div class="feature col">
-                                <h2>이미지 부분</h2>
-                                <p>이미지 부분입니다</p>
-                                <a href="#" class="icon-link">
-                                    이동
-                                <svg class="bi" width="1em" height="1em"><use xlink:href="#chevron-right"/></svg>
-                                </a>
-                            </div>-->
-
                             <div class="product-item women">
                                 <div class="product product_filter">
                                     <div class="product_image">

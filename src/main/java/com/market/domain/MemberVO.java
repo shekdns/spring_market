@@ -17,6 +17,7 @@ public class MemberVO {
 	private String phone3;
 	private String zipcode;
 	private int point;
+	//private double point;
 	private Date regdate;
 	
 	public List<AuthVO> authList;

@@ -49,7 +49,7 @@
 		                  <thead>
 		                  <tr>
 		                    <th>#</th>
-		                    <th>이미지</th>
+		                    <!-- <th>이미지</th> -->
 		                    <th>쿠폰 이름</th>
 		                    <th>쿠폰 타입</th>
 		                    <th>쿠폰 할인율</th>
@@ -57,10 +57,35 @@
 		                  </tr>
 		                  </thead>
 		                  <tbody>
-		                   	 <c:forEach items="${list}" var="coupon">
+		                   <%-- 	 <c:forEach items="${list}" var="coupon" >
+		                   	   <c:forEach items="${coupon.c_attachList}" var="attachList">
 		                   	   <tr>
 		                   	 		<td><c:out value="${coupon.c_cp_idx}" /></td>
+		                   	 		<c:if test="${not empty attachList.c_uploadPath}">
+		                   	 		<td><img src="/resources/upload/<c:out value="${attachList.c_uploadPath}" />\<c:out value="${attachList.c_uuid}" />_<c:out value="${attachList.c_fileName}" />" height='50' width='50'></td>
+		                   	 		</c:if>
+		                   	 		<c:if test="${empty attachList.c_uploadPath}">
 		                   	 		<td><img src="/resources/img/coupon_test.png" height='50' width='50'></td>
+		                   	 		</c:if>
+		                   	 		<td><a class='move' href='<c:out value="${coupon.c_cp_idx}"/>'>
+		                   	 		<c:out value="${coupon.c_cp_name}" /></a></td>
+		                   	 		<td><c:out value="${coupon.c_cp_type}" /></td>
+		                   	 		<td><c:out value="${coupon.c_cp_price}" /></td>
+		                   	 		<td><fmt:formatDate pattern="yyyy-MM-dd hh:mm:ss" value="${coupon.regdate}"/></td>
+		                   	   </tr>
+		                   	   </c:forEach>
+		                   	 </c:forEach> --%>
+		                   	 
+		                   	 <c:forEach items="${list}" var="coupon" >
+		                   	   
+		                   	   <tr>
+		                   	 		<td><c:out value="${coupon.c_cp_idx}" /></td>
+		                   	 		<%-- <c:if test="${not empty coupon.c_attachList[0].c_uploadPath}">
+		                   	 		<td><img src="/resources/upload/<c:out value="${coupon.c_attachList[0].c_uploadPath}" />\<c:out value="${coupon.c_attachList[0].c_uuid}" />_<c:out value="${coupon.c_attachList[0].c_fileName}" />" height='50' width='50'></td>
+		                   	 		</c:if>
+		                   	 		<c:if test="${empty coupon.c_attachList[0].c_uploadPath}">
+		                   	 		<td><img src="/resources/img/noimage.png" height='50' width='50'></td>
+		                   	 		</c:if> --%>
 		                   	 		<td><a class='move' href='<c:out value="${coupon.c_cp_idx}"/>'>
 		                   	 		<c:out value="${coupon.c_cp_name}" /></a></td>
 		                   	 		<td><c:out value="${coupon.c_cp_type}" /></td>
@@ -68,6 +93,9 @@
 		                   	 		<td><fmt:formatDate pattern="yyyy-MM-dd hh:mm:ss" value="${coupon.regdate}"/></td>
 		                   	   </tr>
 		                   	 </c:forEach>
+		                   	 
+		                   	 
+		                   	 
 		                 </tbody>
 		                </table>
 							

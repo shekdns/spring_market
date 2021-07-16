@@ -2,6 +2,27 @@
 <!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.market.mapper.CreateCouponMapper">
 
+	
+	<resultMap type="com.market.domain.CreateCouponVO" id="couponMap">
+		<id property="c_cp_idx" column="c_cp_idx"/>
+		<result property="c_cp_idx" column="c_cp_idx"/>
+		<result property="c_cp_name" column="c_cp_name"/>
+		<result property="c_cp_content" column="c_cp_content"/>
+		<result property="c_cp_type" column="c_cp_type"/>
+		<result property="c_cp_price" column="c_cp_price"/>
+		<result property="regdate" column="regdate"/>
+		<collection property="c_attachList" resultMap="authMap">		
+		</collection>
+	</resultMap>
+	
+	<resultMap type="com.market.domain.CouponAttachVO" id="authMap">
+		<result property="c_uuid" column="c_uuid"/>
+		<result property="c_uploadPath" column="c_uploadPath"/>
+		<result property="c_fileName" column="c_fileName"/>
+		<result property="c_filetype" column="c_filetype"/>
+		<result property="c_cp_idx" column="c_cp_idx"/>
+	</resultMap>
+
 
 	<sql id="criteria">
 		<trim prefix="(" suffix=") AND " prefixOverrides="OR">
@@ -58,13 +79,13 @@
 				c_cp_type,
 				c_cp_price,
 				regdate
-		FROM	(SELECT /*+INDEX_DESC(create_coupon pk_c_cp_idx) */
+		FROM	(SELECT /*+INDEX_DESC(create_coupon pk_c_cp_idx)*/
         				rownum rn,
         				c_cp_idx,
-        				c_cp_name,
-        				c_cp_type,
-        				c_cp_price,
-        				regdate
+						c_cp_name,
+						c_cp_type,
+						c_cp_price,
+						regdate
       			FROM	create_coupon
 				WHERE 
   		]]>
@@ -73,9 +94,44 @@
 		<![CDATA[    
       			rownum <= #{pageNum} * #{amount}
       			)
-  		WHERE rn > (#{pageNum} -1) * #{amount}   
+  		WHERE rn > (#{pageNum} -1) * #{amount} 
 		]]>
 	</select> 
+	
+	<!--  <select id="getListWithPaging" resultMap="couponMap">
+		<![CDATA[
+		SELECT	c_cp_idx,
+				c_cp_name,
+				c_cp_type,
+				c_cp_price,
+				regdate,
+				c_uploadPath,
+                c_fileName,
+                c_filetype,
+                c_uuid
+		FROM	(SELECT /*+INDEX_DESC(create_coupon pk_c_cp_idx)*/
+        				rownum rn,
+        				c.c_cp_idx,
+                        c.c_cp_name,
+                        c.c_cp_type,
+                        c.c_cp_price,
+                        c.regdate,
+                        fa.c_uploadPath,
+                        fa.c_fileName,
+                        fa.c_filetype,
+                        fa.c_uuid
+      			FROM	 create_coupon c LEFT OUTER JOIN coupon_attach fa ON c.c_cp_idx = fa.c_cp_idx
+				WHERE 
+  		]]>
+		<include refid="criteria"></include> 
+      
+		<![CDATA[    
+      			rownum <= #{pageNum} * #{amount}
+      			)
+  		WHERE rn > (#{pageNum} -1) * #{amount}
+  		order by c_cp_idx desc   
+		]]>
+	</select>  -->
 	
 	<select id="getTotalCount" resultType="int">
 		select count(*) from create_coupon where 

@@ -3,9 +3,9 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>kr.ync</groupId>
+	<groupId>com.market</groupId>
 	<artifactId>controller</artifactId>
-	<name>ex00</name>
+	<name>market</name>
 	<packaging>war</packaging>
 	<version>1.0.0-BUILD-SNAPSHOT</version>
 	<properties>
@@ -297,6 +297,14 @@
 			<artifactId>osdt_cert</artifactId>
 			<version>19.9.0.0</version>
 		</dependency>
+		
+		  <!-- 구글 소셜 로그인 구현 -->
+		  <dependency>
+		    <groupId>org.springframework.social</groupId>
+		    <artifactId>spring-social-google</artifactId>
+		    <version>1.0.0.RELEASE</version>
+		  </dependency>
+		  <!-- 구글 소셜 로그인 구현 -->
 
 	</dependencies>
 	<build>

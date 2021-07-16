@@ -50,6 +50,7 @@
 			</props>
 		</property>
 	</bean>
+		
 	
 	<!-- transactionManager  Transaction 처리를 위해 추가 됨-->
 	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">

@@ -208,8 +208,17 @@
 
 			        if(liObj.data("type")){
 			          path.replace(new RegExp(/\\/g),"/");
+			          if (confirm("다운로드 하시겠습니까?.") == true) {
+		    	          self.location = "/download?fileName=" +path;
+		              } else {
+		                  return;
+		              }
 			        }else{
-			          self.location = "/download?fileName=" +path;
+			        	  if (confirm("다운로드 하시겠습니까?.") == true) {
+			    	          self.location = "/download?fileName=" +path;
+			              } else {
+			                  return;
+			              }
 			        }
 
 

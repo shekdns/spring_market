@@ -46,4 +46,50 @@
 		( #{userid}, #{userpw}, #{username}, #{email}, #{phone1}, #{phone2}, #{phone3}, #{zipcode})
 	</insert>
 	
+	<select id="checkOverId" parameterType="String" resultType="int">
+		select count(*) from member where userid = #{userid}
+	</select>
+	
+	<select id="checkOverName" parameterType="String" resultType="int">
+		select count(*) from member where username = #{username}
+	</select>
+	
+	<select id="checkOverEmail" parameterType="String" resultType="int">
+		select count(*) from member where email = #{email}
+	</select>
+	
+	<!-- 아이디 비번 찾기 -->
+	<select id="searchId" parameterType="Map" resultType="String">
+		select userid from member where username = #{param1} and email = #{param2}
+	</select>
+	
+	<select id="find_checkId" parameterType="String" resultType="int">
+		select count(*) from member where username = #{param1} and email = #{param2}
+	</select>
+	
+	<select id="id_userInfo" resultType="com.market.domain.MemberVO">
+		select username from member where username = #{username}
+	</select>
+	
+	<update id="searchPassword" parameterType="Map">
+		update member set userpw = #{param3} where userid = #{param1} and email = #{param2} 
+	</update>
+	
+	<select id="find_checkPass" parameterType="String" resultType="int">
+		select count(*) from member where userid = #{param1} and email = #{param2}
+	</select>
+	
+	<select id="pw_userInfo" resultType="com.market.domain.MemberVO">
+		select userid from member where userid = #{userid}
+	</select>
+	<!-- 아이디 비번 찾기 -->
+	
+	<update id="update_point" parameterType="com.market.domain.MemberVO">
+		update member set point = point + #{point} where userid = #{userid} 
+	</update>
+	
+	<update id="update_minus_point" parameterType="com.market.domain.MemberVO">
+		update member set point = point - #{point} where userid = #{userid} 
+	</update>
+	
 </mapper>

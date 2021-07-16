@@ -1,24 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    <%@ taglib uri="http://www.springframework.org/security/tags"
-	prefix="sec"%>
-	<sec:authentication var="principal" property="principal" />
-<!DOCTYPE html>
-<html lang="en">
-<head
->
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-    <link rel="stylesheet" href="/resources/css/main_styles.css">
-    <link rel="stylesheet" href="/resources/css/responsive.css">
-    <link rel="stylesheet" href="/resources/css/modal.css">
-     <link rel="stylesheet" href="/resources/css/sign_up.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"/>
-  
-</head>
+
 <body>
 
     <!--모달창-->
@@ -30,14 +12,14 @@
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 </div>
                 <div class="modal-body">
-                    <form action="/login" method="post" role="form">
+                    <form action="/login" method="post" role="form" id="login_form" name="login_form">
                         <div class="form-group">
                             <i class="fa fa-user"></i>
-                            <input type="text" class="form-control" placeholder="Username" required="required" name="username" id="id">
+                            <input type="text" class="form-control" placeholder="Username" required="required" name="username">
                         </div>
                         <div class="form-group">
                             <i class="fa fa-lock"></i>
-                            <input type="password" class="form-control" placeholder="Password" required="required" name="password" id="pass">					
+                            <input type="password" class="form-control" placeholder="Password" required="required" name="password">					
                         </div>
                         <div class="form-group">
                             <input type="button" class="btn btn-primary btn-block btn-lg" value="Login" id="login_btn">
@@ -46,9 +28,12 @@
                          <input type="hidden" name="${_csrf.parameterName}"
                              				 value="${_csrf.token}" />
                     </form>
+                     <div class="form-group">
+                            <input type="button" class="btn btn-danger btn-block btn-lg" value="Google-Login" id="google_btn" onclick="google_test();">
+                     </div>
                 </div>
                 <div class="modal-footer">
-                    <a href="#">Forgot Password?</a>
+                    <a href="/front/find_id_pw">Forgot Id OR Password?</a>
                 </div>
             </div>
         </div>
@@ -86,9 +71,21 @@
                                             <li><a href="member_register"><i class="fa fa-user-plus" aria-hidden="true"></i>회원가입</a></li>
                                         </sec:authorize>
                                         <sec:authorize access="isAuthenticated()">
-	                                        <li><a href="/logout"><i class="fa fa-user-plus" aria-hidden="true"></i>로그아웃</a></li>
-	                                        <li><a href="member_register"><i class="fa fa-user-plus" aria-hidden="true"></i>내 정보</a></li>
-	                                        <li><a href="member_register"><i class="fa fa-user-plus" aria-hidden="true"></i>장바구니</a></li>
+                                        
+                                        	<sec:authorize access="hasRole('ROLE_ADMIN')" >	
+                                        	<li><a href="/admin/admin_index"><i class="fa fa-home" aria-hidden="true"></i>관리자이동</a></li>
+                                        	<li><a href="/logout"><i class="fa fa-share" aria-hidden="true"></i>로그아웃</a></li>
+	                                      
+                                        	</sec:authorize>
+                                        	
+                                        	<sec:authorize access="hasRole('ROLE_USER')" >
+	                                        <li><a href="/logout"><i class="fa fa-share" aria-hidden="true"></i>로그아웃</a></li>
+	                                        <li><a href="user_info"><i class="fa fa-user" aria-hidden="true"></i>내 정보</a></li>
+	                                        <li><a href="${principal.username}" class="basket_move"> <i class="fa fa-shopping-cart" aria-hidden="true"></i>장바구니</a></li>
+	                                        <li><a href="${principal.username}" class="wish_move">  <i class="fa fa-heart" aria-hidden="true"></i>관심상품</a></li>
+	                                       
+	                                    	</sec:authorize>
+	                                    	
 	                                     </sec:authorize>   
                                         
                                         </ul>
@@ -107,25 +104,32 @@
                         <div class="row">
                             <div class="col-lg-12 text-right">
                                 <div class="logo_container">
-                                <a href="#">Spring<span>Market</span></a>
+                                <a href="index">Spring<span>Market</span></a>
                                 </div>
                                     <nav class="navbar">
                                         <ul class="navbar_menu">
-                                            <li><a href="index">메인</a></li>
-                                            <li><a href="#">카테고리</a></li>
-                                            <li><a href="#">고객게시판</a></li>
+                                            <li><a href="/front/index">메인</a></li>
+                                            <li><a href="/front/category">카테고리</a></li>
+                                            <li><a href="/front/qa_board/qa_board_list">고객게시판</a></li>
                                             <li><a href="#">찾아오시는길</a></li>
                                         </ul>
+                                    <sec:authorize access="isAuthenticated()">
                                     <ul class="navbar_user">
-                                        <li><a href="#"><i class="fa fa-search" aria-hidden="true"></i></a></li>
                                         <li><a href="#"><i class="fa fa-user" aria-hidden="true"></i></a></li>
                                         <li class="checkout">
-                                            <a href="#">
+                                            <a href="${principal.username}" class="basket_move"> 
                                                 <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                                                <span id="checkout_items" class="checkout_items">0</span>
+                                                
+                                            </a>
+                                        </li>
+                                         <li class="checkout">
+                                            <a href="${principal.username}" class="wish_move">
+                                                <i class="fa fa-heart" aria-hidden="true"></i>
+                                               <!--  <span id="checkout_items" class="checkout_items"></span> -->
                                             </a>
                                         </li>
                                     </ul>
+                                    </sec:authorize>
                                         <div class="hamburger_container">
                                         <i class="fa fa-bars" aria-hidden="true"></i>
                                         </div>
@@ -145,17 +149,40 @@
                     <ul class="menu_top_nav">
                         <li class="menu_item has-children">
                             <a href="#">
-                                My Account
-                                <i class="fa fa-angle-down"></i>
+                                 <sec:authorize access="isAnonymous()">
+                                  My Account <i class="fa fa-angle-down"></i>
+                                  </sec:authorize>
+                                  <sec:authorize access="isAuthenticated()">
+                                 ${principal.username} <i class="fa fa-angle-down"></i>
+                                  </sec:authorize>
                             </a>
                             <ul class="menu_selection">
-                                <li><a href="#myModal" data-toggle="modal"><i class="fa fa-share" aria-hidden="true"></i>Sign In</a></li >
-                                <li><a href="/member_register"><i class="fa fa-user-plus" aria-hidden="true"></i>Register</a></li>
+                            	<sec:authorize access="isAnonymous()">
+                            		<li><a href="#myModal" data-toggle="modal"><i class="fa fa-share" aria-hidden="true"></i>로그인</a></li >
+                                    <li><a href="member_register"><i class="fa fa-user-plus" aria-hidden="true"></i>회원가입</a></li>        
+                            	</sec:authorize>
+                            	
+                            	  <sec:authorize access="isAuthenticated()">
+                                        
+                                    <sec:authorize access="hasRole('ROLE_ADMIN')" >	
+                                        	<li><a href="/admin/admin_index"><i class="fa fa-home" aria-hidden="true"></i>관리자이동</a></li>
+                                        	<li><a href="/logout"><i class="fa fa-share" aria-hidden="true"></i>로그아웃</a></li>
+	                                      
+                                    </sec:authorize>
+                                        	
+                                    <sec:authorize access="hasRole('ROLE_USER')" >
+	                                         <li><a href="/logout"><i class="fa fa-share" aria-hidden="true"></i>로그아웃</a></li>
+	                                        <li><a href="user_info"><i class="fa fa-user" aria-hidden="true"></i>내 정보</a></li>
+	                                        <li><a href="${principal.username}" class="basket_move"> <i class="fa fa-shopping-cart" aria-hidden="true"></i>장바구니</a></li>
+	                                        <li><a href="${principal.username}" class="wish_move"> <i class="fa fa-heart" aria-hidden="true"></i>관심상품</a></li>
+	                                </sec:authorize>
+	                                    	
+	                            </sec:authorize>   
                             </ul>
                         </li>
-                        <li class="menu_item"><a href="index">메인</a></li>
-                        <li class="menu_item"><a href="#">카테고리</a></li>
-                        <li class="menu_item"><a href="#">고객게시판</a></li>
+                        <li class="menu_item"><a href="/front/index">메인</a></li>
+                        <li class="menu_item"><a href="/front/category">카테고리</a></li>
+                        <li class="menu_item"><a href="/front/qa_board/qa_board_list">고객게시판</a></li>
                         <li class="menu_item"><a href="#">찾아오시는길</a></li>
                     </ul>
                 </div>

@@ -12,6 +12,8 @@ public interface CreateCouponService {
 	
 	public List<CreateCouponVO> getListWithPaging(Criteria cri);
 	
+	//public CreateCouponVO getListWithPaging(Criteria cri);
+	
 	public int getTotal(Criteria cri);
 	
 	public CreateCouponVO coupon_get(int c_cp_idx);

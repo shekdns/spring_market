@@ -38,7 +38,7 @@
 }
 .sign_in_container a span
 {
-	color: #fe4c50;
+	color: #64FE2E;
 }
 
 .form_container {
@@ -50,3 +50,159 @@
 	position: relative;
 
 }
+
+
+/* 약관 스타일 부분*/
+.yak_container {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box
+}
+
+.yak_container ul>li {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+.yak_container a {
+	text-decoration: none;
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+.yak_container .clearfix::after {
+	content: "";
+	display: block;
+	clear: both;
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+#joinForm {
+	width: 650px;
+	margin: 0 auto;
+}
+
+ul.join_box {
+	border: 1px solid #ddd;
+	background-color: #fff;
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+.checkBox, .checkBox>ul {
+	position: relative;
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+.checkBox>ul>li {
+	float: left;
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box
+}
+
+.checkBox>ul>li:first-child {
+	width: 85%;
+	padding: 15px;
+	font-weight: 600;
+	color: #888;
+}
+
+.checkBox>ul>li:nth-child(2) {
+	position: absolute;
+	top: 50%;
+	right: 30px;
+	margin-top: -12px;
+}
+
+.checkBox textarea {
+	width: 96%;
+	height: 90px;
+	margin: 0 2%;
+	background-color: #f7f7f7;
+	color: #888;
+	border: none;
+}
+
+.footBtwrap {
+	margin-top: 15px;
+	margin-left: 15px;
+}
+
+.footBtwrap>li {
+	float: left;
+	width: 50%;
+	height: 60px;
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+.footBtwrap>li>button {
+	display: block;
+	width: 300px;
+	height: 100%;
+	font-size: 20px;
+	text-align: center;
+	line-height: 60px;
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+.fpmgBt1 {
+	background-color: #fff;
+	color: #888;
+}
+
+.fpmgBt2 {
+	background-color: rgb(248, 97, 77);
+	color: #fff;
+}
+
+
+div.stepLine {
+	display: inline-block;
+	border-bottom: 1px solid #f67001;
+	height: 0;
+}
+
+div.stepDot {
+	width: 15px;
+	height: 15px;
+	background-color: #fff;
+	border: 1px solid #cecece;
+	border-radius: 50%;
+	float: left;
+	margin: -8px 40px 0px 40px;
+	color: #cecece;
+}
+
+div.stepDot.activeStep {
+	background-color: #f67001 !important;
+	border-color: #f67001 !important;
+	color: #f67001;
+}
+
+div.stepDot.activeStep ~ div.stepDot {
+	background-color: #fff;
+	border: 1px solid #f67001;
+}
+
+div.stepDot:after {
+	content: attr(title);
+	white-space: nowrap;
+	position: relative;
+	top: 20px;
+	right: 8px;
+	font: 12px arial, sans-serif;
+}
+/* 약관 스타일 부분*/

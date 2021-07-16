@@ -46,7 +46,7 @@
 }
 .modal-login .btn, .modal-login .btn:active {	
 	border: none;
-	background: #00ce81 !important;
+	/* background: #00ce81 !important; */
 	line-height: normal;
 }
 .modal-login .btn:hover, .modal-login .btn:focus {

@@ -14,13 +14,17 @@ public class Criteria {
 
 	private int pageNum;
 	private int amount;
-	private int gnrcode;
+	private int cacode;
 	
 	private String type;
 	private String keyword;
 
 	public Criteria() {
 		this(1, 10);
+	}
+	
+	public Criteria(int cacode) {
+		this.cacode = cacode;
 	}
 
 	public Criteria(int pageNum, int amount) {
@@ -37,7 +41,7 @@ public class Criteria {
 	}
 	
 	
-	public Criteria(int pageNum, int amount, int gnrcode) {
+	public Criteria(int pageNum, int amount, int cacode) {
 		
 //		if(!StringUtils.isNumeric(String.valueOf(pageNum)) || pageNum == 0) {
 //			this.pageNum = 1;
@@ -48,7 +52,7 @@ public class Criteria {
 		//this.pageNum = (!StringUtils.isNumeric(String.valueOf(pageNum)) || pageNum == 0) ? 10 : pageNum;   
 		this.pageNum = pageNum;
 		this.amount = amount;
-		this.gnrcode = gnrcode;
+		this.cacode = cacode;
 	}
 	
 
@@ -64,7 +68,7 @@ public class Criteria {
 	public String getListLink() {
 		
 		UriComponentsBuilder builder = UriComponentsBuilder.fromPath("")
-				.queryParam("gnrcode", this.getGnrcode())
+				.queryParam("cacode", this.getCacode())
 				.queryParam("pageNum", this.getPageNum())
 				.queryParam("amount", this.getAmount())
 				.queryParam("type", this.getType())

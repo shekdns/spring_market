@@ -3,7 +3,7 @@
  <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="index3.html" class="brand-link">
+    <a href="#" class="brand-link">
       <span class="brand-text font-weight-light">관리자 페이지</span>
     </a>
 
@@ -61,6 +61,27 @@
               </li>
             </ul>
           </li> -->
+          
+           <li class="nav-item">
+            <a href="/front/index" class="nav-link">
+              <i class="nav-icon fa fa-home" aria-hidden="true"></i>
+              <p>
+                		프론트 이동
+                <span class="right badge badge-danger">New</span>
+              </p>
+            </a>
+          </li>
+          
+          <li class="nav-item">
+            <a href="/admin/notice/admin_notice" class="nav-link">
+              <i class="nav-icon fas fa-th"></i>
+              <p>
+                		공지사항
+                <span class="right badge badge-danger">New</span>
+              </p>
+            </a>
+          </li>
+          
           <li class="nav-item">
             <a href="/admin/admin_coupon" class="nav-link">
               <i class="nav-icon fas fa-th"></i>
@@ -70,6 +91,19 @@
               </p>
             </a>
           </li>
+          
+            <li class="nav-item">
+            <a href="/admin/product/admin_product" class="nav-link">
+              <i class="nav-icon fas fa-th"></i>
+              <p>
+                		상품 관리
+                <span class="right badge badge-danger">New</span>
+              </p>
+            </a>
+          </li>
+          
+          
+          
         </ul>
       </nav>
       <!-- /.sidebar-menu -->
