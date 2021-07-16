@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.market.mapper.ReplyMapper">
+
+	<insert id="insert">
+		INSERT INTO reply (rno, r_pdid, reply, replyer)
+		VALUES (seq_rno.nextval, #{r_pdid}, #{reply}, #{replyer})
+	</insert>
+
+	<select id="read" resultType="com.market.domain.ReplyVO">
+		SELECT * FROM reply WHERE rno =	#{rno}
+	</select>
+
+	<delete id="delete">
+		DELETE FROM reply WHERE rno = #{rno}
+	</delete>
+
+	<update id="update">
+		UPDATE reply SET	
+		reply = #{reply},
+		updatedate = sysdate 
+		WHERE rno = #{rno}
+		
+	</update>
+
+
+	<select id="getList" resultType="com.market.domain.ReplyVO">
+
+		select rno, r_pdid, reply, replyer, replyDate, updatedate
+		from reply
+		where r_pdid = #{r_pdid}
+		order by rno DESC
+
+	</select>
+
+	<select id="getListWithPaging" resultType="com.market.domain.ReplyVO">
+		<![CDATA[
+	 		SELECT	rno,
+	 				r_pdid,
+	 				reply,
+	 				replyer,
+	 				regDate,
+	 				updatedate
+	 		FROM	(SELECT /*+INDEX_DESC(reply pk_rno) */ 
+	      					rownum rn,
+	      					rno,
+	      					r_pdid,
+	      					reply,
+	      					replyer,
+	      					regDate,
+	      					updatedate
+	    			FROM	reply
+	    			WHERE	r_pdid =  #{r_pdid}
+	    			AND		rno > 0
+	    			AND		rownum <= #{cri.pageNum} * #{cri.amount}
+	   				)
+	   		WHERE	rn > (#{cri.pageNum} -1) * #{cri.amount}
+		]]>
+	</select>
+
+	<select id="getCountByBno" resultType="int">
+		<![CDATA[
+		SELECT count(rno) FROM reply WHERE r_pdid = #{r_pdid}
+		]]>
+	</select>
+
+</mapper>

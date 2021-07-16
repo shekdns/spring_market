@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.market.mapper.BasketMapper">
+	
+	
+	<resultMap type="com.market.domain.BasketVO" id="BasketMap">
+		<id property="bk_idx" column="bk_idx"/>
+		<result property="bk_idx" column="bk_idx"/>
+		<result property="userid" column="userid"/>
+		<result property="pdid" column="pdid"/>
+		<result property="bk_cnt" column="bk_cnt"/>
+		<collection property="product" resultMap="ProductMap">
+		</collection>
+		<collection property="category" resultMap="CategoryMap">		
+		</collection>
+	</resultMap>
+	
+	<resultMap type="com.market.domain.ProductVO" id="ProductMap">
+		<result property="pdid" column="pdid"/>
+		<result property="pdname" column="pdname"/>
+		<result property="pdprice" column="pdprice"/>
+		<result property="cacode" column="cacode"/>
+		<result property="main_img" column="main_img"/>
+	</resultMap>
+	
+	<resultMap type="com.market.domain.CategoryVO" id="CategoryMap">
+		<result property="cacode" column="cacode"/>
+		<result property="caname" column="caname"/>
+	</resultMap>
+	
+	
+
+	<insert id="insert_basket">
+		<selectKey keyProperty="bk_idx" order="BEFORE" resultType="int">
+			select seq_basket.nextval from dual
+		</selectKey>
+
+		insert into basket (bk_idx, userid, pdid, bk_cnt)
+		values (#{bk_idx}, #{userid}, #{pdid}, #{bk_cnt})
+	</insert>
+	
+	<select id="basket_all_list" resultType="com.market.domain.BasketVO">
+		select * from basket
+	</select>
+	
+	<select id="basket_all_list_userid" resultType="String">
+		select * from basket where userid = #{userid}
+	</select>
+	
+	<select id="basket_info" resultMap="BasketMap">
+		select bk.bk_idx,
+		       bk.bk_cnt,
+		       pd.pdid,
+		       pd.pdname,
+		       pd.pdprice,
+		       pd.main_img,
+		       ca.caname,
+		       ca.cacode
+		from   basket bk,
+		       product pd,
+		       category ca
+		where  bk.pdid = pd.pdid
+		and    pd.cacode = ca.cacode
+		and    bk.userid = #{userid}
+	</select>
+	
+	
+
+	
+	<delete id="basket_delete">
+		delete basket where bk_idx = #{bk_idx}
+	</delete>
+	
+	<delete id="basket_check_delete" parameterType="com.market.domain.BasketVO">
+		delete basket where bk_idx = #{bk_idx}
+	</delete>
+
+	
+	<select id="getTotalCountBasket" resultType="int">
+		
+		select count(*) from basket where userid = #{userid} 
+		
+	</select>
+	
+</mapper>

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.market.mapper.OrderMapper">
+	
+	
+	<resultMap type="com.market.domain.BasketVO" id="BasketMap">
+		<id property="bk_idx" column="bk_idx"/>
+		<result property="bk_idx" column="bk_idx"/>
+		<result property="userid" column="userid"/>
+		<result property="pdid" column="pdid"/>
+		<result property="bk_cnt" column="bk_cnt"/>
+		<collection property="product" resultMap="ProductMap">
+		</collection>
+		<collection property="category" resultMap="CategoryMap">		
+		</collection>
+	</resultMap>
+	
+	<resultMap type="com.market.domain.ProductVO" id="ProductMap">
+		<result property="pdid" column="pdid"/>
+		<result property="pdname" column="pdname"/>
+		<result property="pdprice" column="pdprice"/>
+		<result property="cacode" column="cacode"/>
+		<result property="main_img" column="main_img"/>
+	</resultMap>
+	
+	<resultMap type="com.market.domain.CategoryVO" id="CategoryMap">
+		<result property="cacode" column="cacode"/>
+		<result property="caname" column="caname"/>
+	</resultMap>
+	
+	
+
+	<insert id="insert_order">
+		<selectKey keyProperty="order_idx" order="BEFORE" resultType="int">
+			select seq_order_idx.nextval from dual
+		</selectKey>
+
+		insert into orders (order_idx, order_id, order_name, order_zip, order_addr1, order_addr2, order_tel, 
+		                    order_phone, order_email, order_message , order_total, order_onum)
+		values (#{order_idx}, #{order_id}, #{order_name}, #{order_zip}, #{order_addr1}, #{order_addr2}, #{order_tel}, 
+		         #{order_phone}, #{order_email},  #{order_message}, #{order_total}, #{order_onum})
+	</insert>
+	
+	
+	<insert id="insert_order_detail">
+		<selectKey keyProperty="od_detail_num" order="BEFORE" resultType="int">
+			select seq_od_detail_num.nextval from dual
+		</selectKey>
+
+		insert into order_detail (od_detail_num, order_idx, pdid, od_cnt)
+		values (#{od_detail_num}, #{order_idx}, #{pdid}, #{od_cnt})
+	</insert>
+	
+	<select id="basket_all_list" resultType="com.market.domain.BasketVO">
+		select * from basket
+	</select>
+	
+	<select id="basket_all_list_userid" resultType="String">
+		select * from basket where userid = #{userid}
+	</select>
+	
+	<select id="basket_info" resultMap="BasketMap">
+		select bk.bk_idx,
+		       bk.bk_cnt,
+		       pd.pdid,
+		       pd.pdname,
+		       pd.pdprice,
+		       pd.main_img,
+		       ca.caname,
+		       ca.cacode
+		from   basket bk,
+		       product pd,
+		       category ca
+		where  bk.pdid = pd.pdid
+		and    pd.cacode = ca.cacode
+		and    bk.userid = #{userid}
+	</select>
+	
+	
+	<select id="read" resultType="com.market.domain.NoticeVO">
+		select * from notice where no_idx = #{no_idx}
+	</select>
+	
+	<delete id="basket_delete">
+		delete basket where bk_idx = #{bk_idx}
+	</delete>
+	
+	<delete id="basket_check_delete" parameterType="com.market.domain.BasketVO">
+		delete basket where bk_idx = #{bk_idx}
+	</delete>
+ 
+	<update id="update_notice">
+		update notice
+		set 
+		no_title = #{no_title},
+		no_content = #{no_content},
+		no_semi_title = #{no_semi_title},
+		updateDate = sysdate
+		where no_idx = #{no_idx}
+	</update>
+	
+	
+	<select id="getTotalCountBasket" resultType="int">
+		
+		select count(*) from basket where userid = #{userid} 
+		
+	</select>
+	
+</mapper>

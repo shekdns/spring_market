@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.market.mapper.NoticeMapper">
+
+	
+	<resultMap type="com.market.domain.NoticeVO" id="noticeMap">
+		<id property="no_idx" column="no_idx"/>
+		<result property="no_idx" column="no_idx"/>
+		<result property="no_writer" column="no_writer"/>
+		<result property="no_title" column="no_title"/>
+		<result property="no_semi_title" column="no_semi_title"/>
+		<result property="no_content" column="no_content"/>
+		<result property="regdate" column="regdate"/>
+		<result property="updateDate" column="updateDate"/>
+		<collection property="no_attachList" resultMap="authMap">		
+		</collection>
+	</resultMap>
+	
+	<resultMap type="com.market.domain.NoticeAttachVO" id="authMap">
+		<result property="no_uuid" column="no_uuid"/>
+		<result property="no_uploadPath" column="no_uploadPath"/>
+		<result property="no_fileName" column="no_fileName"/>
+		<result property="no_filetype" column="no_filetype"/>
+		<result property="no_idx" column="no_idx"/>
+	</resultMap>
+
+
+	<sql id="criteria">
+		<trim prefix="(" suffix=") AND " prefixOverrides="OR">
+			<foreach item='type' collection="typeArr">
+				<trim prefix="OR">
+					<choose>
+						<when test="type == 'T'.toString()">
+							no_writer like '%'||#{keyword}||'%'
+						</when>
+						<when test="type == 'C'.toString()">
+							no_title like '%'||#{keyword}||'%'
+						</when>
+						<when test="type == 'W'.toString()">
+							no_content like '%'||#{keyword}||'%'
+						</when>
+					</choose>
+				</trim>
+			</foreach>
+		</trim>
+	</sql>
+
+	<insert id="create_notice">
+		<selectKey keyProperty="no_idx" order="BEFORE" resultType="int">
+			select seq_no_idx.nextval from dual
+		</selectKey>
+
+		insert into notice (no_idx, no_writer, no_title, no_content, no_semi_title)
+		values (#{no_idx}, #{no_writer}, #{no_title}, #{no_content}, #{no_semi_title})
+	</insert>
+	
+	
+	<select id="read" resultType="com.market.domain.NoticeVO">
+		select * from notice where no_idx = #{no_idx}
+	</select>
+	
+	<delete id="delete_notice">
+		delete notice where no_idx = #{no_idx}
+	</delete>
+ 
+	<update id="update_notice">
+		update notice
+		set 
+		no_title = #{no_title},
+		no_content = #{no_content},
+		no_semi_title = #{no_semi_title},
+		updateDate = sysdate
+		where no_idx = #{no_idx}
+	</update>
+	
+	
+	 <select id="getListWithPaging" resultType="com.market.domain.NoticeVO">
+		<![CDATA[
+		SELECT	no_idx,
+				no_writer,
+				no_title,
+				no_semi_title,
+				regdate,
+				updateDate
+		FROM	(SELECT /*+INDEX_DESC(notice pk_no_idx) */
+        				rownum rn,
+        				no_idx,
+						no_writer,
+						no_title,
+						no_semi_title,
+						regdate,
+						updateDate
+      			FROM	notice no 
+				WHERE 
+  		]]>
+		<include refid="criteria"></include> 
+      
+		<![CDATA[    
+      			rownum <= #{pageNum} * #{amount}
+      			)
+  		WHERE rn > (#{pageNum} -1) * #{amount}   
+		]]>
+	</select> 
+	
+	<!--  <select id="getListWithPaging" resultMap="noticeMap">
+		<![CDATA[
+		SELECT	no_idx,
+				no_writer,
+				no_title,
+				no_semi_title,
+				regdate,
+				updateDate,
+				no_uploadPath,
+                no_fileName,
+                no_filetype,
+                no_uuid
+		FROM	(SELECT /*+INDEX_DESC(notice pk_no_idx) */
+        				rownum rn,
+        				no.no_idx,
+                        no.no_writer,
+                        no.no_title,
+                        no.no_semi_title,
+                        no.regdate,
+                        no.updateDate,
+                        fa.no_uploadPath,
+                        fa.no_fileName,
+                        fa.no_filetype,
+                        fa.no_uuid
+      			FROM	 notice no LEFT OUTER JOIN notice_attach fa ON no.no_idx = fa.no_idx
+				WHERE 
+  		]]>
+		<include refid="criteria"></include> 
+      
+		<![CDATA[    
+      			rownum <= #{pageNum} * #{amount}
+      			)
+  		WHERE rn > (#{pageNum} -1) * #{amount}   
+		ORDER BY no_idx desc
+		]]>
+	</select>  -->
+	
+	<select id="getTotalCount" resultType="int">
+		select count(*) from notice where 
+		
+		<include refid="criteria"></include>
+		
+		<![CDATA[
+		no_idx > 0
+		]]>
+	</select>
+	
+</mapper>

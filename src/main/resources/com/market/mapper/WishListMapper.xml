@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.market.mapper.WishListMapper">
+
+
+	<sql id="criteria">
+		<trim prefix="(" suffix=") AND " prefixOverrides="OR">
+			<foreach item='type' collection="typeArr">
+				<trim prefix="OR">
+					<choose>
+						<when test="type == 'T'.toString()">
+							no_writer like '%'||#{keyword}||'%'
+						</when>
+						<when test="type == 'C'.toString()">
+							no_title like '%'||#{keyword}||'%'
+						</when>
+						<when test="type == 'W'.toString()">
+							no_content like '%'||#{keyword}||'%'
+						</when>
+					</choose>
+				</trim>
+			</foreach>
+		</trim>
+	</sql>
+
+
+	<resultMap type="com.market.domain.WishListVO" id="WishMap">
+		<id property="wish_idx" column="wish_idx"/>
+		<result property="pdid" column="pdid"/>
+		<result property="userid" column="userid"/>
+		<collection property="product" resultMap="ProductMap">
+		</collection>
+		<collection property="category" resultMap="CategoryMap">		
+		</collection>
+	</resultMap>
+	
+	<resultMap type="com.market.domain.ProductVO" id="ProductMap">
+		<result property="pdid" column="pdid"/>
+		<result property="pdname" column="pdname"/>
+		<result property="pdprice" column="pdprice"/>
+		<result property="cacode" column="cacode"/>
+		<result property="pdhit" column="pdhit"/>
+		<result property="main_img" column="main_img"/>
+	</resultMap>
+	
+	<resultMap type="com.market.domain.CategoryVO" id="CategoryMap">
+		<result property="cacode" column="cacode"/>
+		<result property="caname" column="caname"/>
+	</resultMap>
+
+	<insert id="insert_wishList">
+		<selectKey keyProperty="wish_idx" order="BEFORE" resultType="int">
+			select seq_wish_list.nextval from dual
+		</selectKey>
+
+		insert into wish_list (wish_idx, userid, pdid)
+		values (#{wish_idx}, #{userid}, #{pdid})
+	</insert>
+	
+	
+	<select id="checkList"  resultType="com.market.domain.WishListVO">
+		select pdid from wish_list where userid = #{userid}
+	</select>
+	
+		<select id="showList" resultType="com.market.domain.WishListVO">
+		select * from wish_list
+	</select>
+	
+	
+	<delete id="delete_wishList">
+		delete from wish_list where userid = #{userid} and pdid = #{pdid}
+	</delete>
+ 	
+ 	<delete id="wish_check_delete" parameterType="com.market.domain.WishListVO">
+		delete from wish_list where wish_idx = #{wish_idx}
+	</delete>
+
+	
+
+
+	
+		<select id="wish_info" resultMap="WishMap">
+					select wi.wish_idx,
+					       wi.userid,
+					       wi.pdid,
+					       pd.pdname,
+					       pd.pdprice,
+					       pd.cacode,
+					       pd.pdhit,
+					       pd.main_img,
+					       ca.caname
+					from  wish_list wi,
+					      product pd,
+					      category ca
+					where wi.pdid = pd.pdid
+					and   pd.cacode = ca.cacode
+					and   wi.userid = #{userid}
+		</select>
+	
+	
+	<select id="getTotalCountWish" resultType="int">
+		select count(*) from wish_list where userid = #{userid} 
+	</select>
+	
+</mapper>

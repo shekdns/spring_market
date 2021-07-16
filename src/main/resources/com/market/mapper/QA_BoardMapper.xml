@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.market.mapper.QA_BoardMapper">
+
+	<sql id="criteria">
+		<trim prefix="(" suffix=") AND " prefixOverrides="OR">
+			<foreach item='type' collection="typeArr">
+				<trim prefix="OR">
+					<choose>
+						<when test="type == 'T'.toString()">
+							qa_title like '%'||#{keyword}||'%'
+						</when>
+						<when test="type == 'C'.toString()">
+							qa_content like '%'||#{keyword}||'%'
+						</when>
+						<when test="type == 'W'.toString()">
+							userid like '%'||#{keyword}||'%'
+						</when>
+					</choose>
+				</trim>
+			</foreach>
+		</trim>
+	</sql>
+	
+
+	
+	
+	<select id="getList" resultType="com.market.domain.QA_BoardVO">
+	<![CDATA[
+		select * from qa_board where bno > 0 
+		]]>
+	</select>
+	
+	<select id="getBoardReplyInfo" resultType="com.market.domain.QA_BoardVO">
+		<![CDATA[
+		select qa_idx, group_num, thread, depth from qa_board where qa_idx = #{qa_idx}
+		]]>
+	</select>
+	
+	<insert id="insertSelectKey">
+		
+	<!-- 	    private int qa_idx;
+			private String userid;
+			private String qa_pw;
+			private String qa_title;
+			private String qa_content;
+			private String qa_file;
+			private Date regdate;
+			private Date updatedate;
+			private int qa_locked;
+			private int qa_hit;
+			private int thread;
+			private int depth;
+			private int group_num;
+			private String re_userid;
+			private String re_regdate;
+			private String re_updatedate;  -->
+		
+		<selectKey keyProperty="qa_idx" order="BEFORE"
+			resultType="int">
+			select seq_qa_idx.nextval from dual
+		</selectKey>
+
+		insert into qa_board (qa_idx, userid, qa_pw, qa_title, qa_content, qa_file, group_num)
+		values (#{qa_idx}, #{userid}, #{qa_pw}, #{qa_title}, #{qa_content}, #{qa_file}, #{qa_idx})
+	</insert>
+	
+	<select id="read" resultType="com.market.domain.QA_BoardVO">
+		select * from qa_board where qa_idx = #{qa_idx}
+	</select>
+
+
+	<delete id="delete">
+		delete qa_board where qa_idx = #{qa_idx}
+	</delete>
+ 
+	<update id="update">
+		update qa_board
+		set qa_title= #{qa_title},
+			qa_content=#{qa_content},
+			qa_file = #{qa_file},
+			updateDate = sysdate
+			where qa_idx = #{qa_idx}
+	</update>
+	
+	
+ 	<select id="getListWithPaging" resultType="com.market.domain.QA_BoardVO">
+		<![CDATA[
+		SELECT	qa_idx,
+				userid,
+				qa_title,
+				qa_content,
+				qa_locked,
+				qa_hit,
+				regdate
+		FROM	(SELECT /*+INDEX_DESC(qa_board pk_qa_idx) */
+        				rownum rn,
+        				qa_idx,
+						userid,
+						qa_title,
+						qa_content,
+						qa_locked,
+						qa_hit,
+						regdate
+      			FROM	qa_board
+				WHERE 
+  		]]>
+		<include refid="criteria"></include> 
+      
+		<![CDATA[    
+      			rownum <= #{pageNum} * #{amount}
+      			)
+  		WHERE rn > (#{pageNum} -1) * #{amount}   
+		]]>
+	</select> 
+	
+	<select id="getTotalCount" resultType="int">
+		select count(*) from qa_board where 
+		
+		<include refid="criteria"></include>
+		
+		<![CDATA[
+		qa_idx > 0
+		]]>
+	</select>
+	
+	<update id="updateQa_Hit">
+		UPDATE qa_board SET qa_hit = qa_hit + 1 WHERE qa_idx = #{qa_idx}
+	</update>
+	
+	
+
+</mapper>

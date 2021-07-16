@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.market.mapper.NoticeAttachMapper">
+
+	<insert id="no_a_insert">
+		insert into notice_attach (no_uuid, no_uploadPath, no_fileName, no_filetype, no_idx)
+		 values (#{no_uuid}, #{no_uploadPath}, #{no_fileName}, #{no_filetype}, #{no_idx})
+	
+	</insert>
+
+	<delete id="no_a_delete">
+		delete from notice_attach where no_uuid = #{no_uuid}
+	
+	</delete>
+	
+	<select id="findByNo_Idx" resultType="com.market.domain.NoticeAttachVO">
+		select * from notice_attach where no_idx = #{no_idx}
+	
+	</select>
+	
+	<delete id="deleteAll">
+		delete from notice_attach where no_idx = #{no_idx}
+	</delete>
+
+</mapper>

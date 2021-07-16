@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.market.mapper.UseCouponMapper">
+	
+	
+	<resultMap type="com.market.domain.SendCouponVO" id="SendCoupon">
+		<id property="s_cp_idx" column="s_cp_idx"/>
+		<result property="s_cp_idx" column="s_cp_idx"/>
+		<result property="s_cp_uuid" column="s_cp_uuid"/>
+		<result property="userid" column="userid"/>
+		<result property="situ" column="situ"/>
+		<collection property="c_coupon" resultMap="CreateCoupon">		
+		</collection>
+	</resultMap>
+	
+	<resultMap type="com.market.domain.CreateCouponVO" id="CreateCoupon">
+		<result property="c_cp_idx" column="c_cp_idx"/>
+		<result property="c_cp_name" column="c_cp_name"/>
+		<result property="c_cp_price" column="c_cp_price"/>
+	</resultMap>
+	
+	<insert id="insert_use_coupon">
+		<selectKey keyProperty="u_cp_idx" order="BEFORE" resultType="int">
+			select seq_u_cp_idx.nextval from dual
+		</selectKey>
+
+		insert into use_coupon (u_cp_idx, s_cp_idx)
+		values (#{u_cp_idx}, #{s_cp_idx})
+	</insert>
+	
+	
+
+
+
+</mapper>

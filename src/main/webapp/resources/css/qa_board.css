@@ -1,0 +1,113 @@
+@charset "UTF-8";
+
+* {
+	/* margin: 0 auto;
+	padding: 0; */
+	font-family: 'Malgun gothic','Sans-Serif','Arial';
+}
+a {
+	text-decoration: none;
+	color:#333;
+}
+ul li {
+	list-style:none;
+}
+
+#board_position {
+  position: relative;
+  width: 100%;
+  margin: 0 auto;
+  height: 700px;
+
+}
+#board_text {
+  text-align:center;
+   padding-bottom: 80px;
+  font-size: 30px;
+ /*  font-family: 'Nanum Gothic', serif; */
+
+
+}
+/* 공통 */
+.fl {
+	float:left;
+}
+.tc {
+	text-align:center;
+}
+
+/* 게시판 목록 */
+#board_area {
+	padding-top: 50px;
+	width: 1200px;
+	position: relative;
+}
+.list-table {
+	margin-top: 40px;
+	width: 1200px;
+}
+.list-table thead th{
+	height:40px;
+	border-top:2px solid ;
+	border-bottom:1px solid;
+	font-weight: bold;
+	font-size: 13px;
+	text-align: center;
+}
+.list-table tbody td{
+	text-align:center;
+	padding:10px 0;
+	border-bottom:1px solid #CCC; height:20px;
+	font-size: 12px
+}
+.list-table tbody th{
+	text-align:center;
+	border-bottom:1px solid #CCC;
+
+}
+#write_btn {
+	position: absolute;
+	margin-top:20px;
+	right: 0;
+}
+#write_position {
+	position: relative;
+	    width: 100%;
+	    /* left: 450px; */
+	    margin: 0 auto;
+	    height: 65vh;
+}
+#write_text{
+	padding-top: 50px;
+    font-size: 30px;
+    font-family: 'Nanum Gothic', serif;
+}
+
+#read_position{
+	position: relative;
+	    width: 100%;
+	    /* left: 450px; */
+	    margin: 0 auto;
+	    /* height: 65vh; */
+}
+#read_text{
+	/* padding-top: 50px; */
+    padding-bottom: 80px;
+    font-size: 30px;
+    font-family: 'Nanum Gothic', serif;
+}
+
+#board_serch_box{
+	text-align: center;
+
+}
+
+.qa_section{
+	margin: 0 auto;
+	padding-top: 200px;
+	width: 1400px;
+}
+.qa_table_section{
+	
+	height: 500px;
+}

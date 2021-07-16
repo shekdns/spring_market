@@ -1,0 +1,25 @@
+@charset "UTF-8";
+
+.register_section {
+	width: 1000px;
+    margin: 0 auto;
+    padding-top: 200px;
+}
+
+.gdsImg {
+  padding: 6px 25px;
+  background-color:#80ff00;
+  border-radius: 4px;
+  color: white;
+  cursor: pointer;
+	
+}
+
+#file_reset {
+  padding: 6px 25px;
+  background-color:#ff0080;
+  border-radius: 4px;
+  color: white;
+  cursor: pointer;
+	
+}
